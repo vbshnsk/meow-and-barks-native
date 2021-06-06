@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_empty"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/nav_bar_add"
+        app:navGraph="@navigation/nav_bar" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/rect_shadow_top"
+        app:layout_constraintBottom_toTopOf="@id/bg_card"
+        app:layout_constraintEnd_toEndOf="@id/bg_card"
+        app:layout_constraintStart_toStartOf="@id/bg_card"
+        app:layout_constraintTop_toTopOf="@id/nav_bar_add" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/bg_card"
+        android:layout_width="0dp"
+        android:layout_height="58dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/nav_bar_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/nav_bar_home"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="1dp"
+        android:maxWidth="40dp"
+        android:maxHeight="40dp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:icon="@drawable/ic_home"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="40dp"
+        app:iconTint="@color/light_grey"
+        app:layout_constraintBottom_toBottomOf="@+id/nav_bar_add"
+        app:layout_constraintEnd_toStartOf="@id/nav_bar_map"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/nav_bar_add"
+        app:layout_constraintVertical_bias="0.75" />
+
+    <Button
+        android:id="@+id/nav_bar_map"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="1dp"
+        android:maxWidth="40dp"
+        android:maxHeight="40dp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:icon="@drawable/ic_map"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="40dp"
+        app:iconTint="@color/light_grey"
+        app:layout_constraintBottom_toBottomOf="@+id/nav_bar_add"
+        app:layout_constraintEnd_toStartOf="@id/nav_bar_add"
+        app:layout_constraintStart_toEndOf="@id/nav_bar_home"
+        app:layout_constraintTop_toTopOf="@+id/nav_bar_add"
+        app:layout_constraintVertical_bias="0.75" />
+
+    <Button
+        android:id="@+id/nav_bar_user"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="1dp"
+        android:maxWidth="40dp"
+        android:maxHeight="40dp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:icon="@drawable/ic_user"
+
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="40dp"
+        app:iconTint="@color/light_grey"
+        app:layout_constraintBottom_toBottomOf="@id/nav_bar_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/nav_bar_heart"
+        app:layout_constraintTop_toTopOf="@id/nav_bar_add"
+        app:layout_constraintVertical_bias="0.75" />
+
+    <Button
+        android:id="@+id/nav_bar_heart"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="1dp"
+        android:maxWidth="40dp"
+        android:maxHeight="40dp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:icon="@drawable/ic_heart"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="40dp"
+        app:iconTint="@color/light_grey"
+        app:layout_constraintBottom_toBottomOf="@id/nav_bar_add"
+        app:layout_constraintEnd_toStartOf="@id/nav_bar_user"
+        app:layout_constraintStart_toEndOf="@id/nav_bar_add"
+        app:layout_constraintTop_toTopOf="@id/nav_bar_add"
+        app:layout_constraintVertical_bias="0.75" />
+
+    <Button
+        android:id="@+id/nav_bar_add"
+        style="@style/RoundButtonOnlyIcon"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center"
+        app:icon="@drawable/ic_add"
+        app:iconGravity="textStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/nav_empty"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

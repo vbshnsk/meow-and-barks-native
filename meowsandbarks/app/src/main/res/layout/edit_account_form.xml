@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/about_me_text_create_account"
+        style="@style/TextLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/about_me"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/create_account_name_layout"
+        style="@style/TextForm"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/about_me_text_create_account"
+        app:layout_constraintTop_toBottomOf="@+id/about_me_text_create_account">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/create_account_name"
+            style="@style/TextBase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/name"
+            android:inputType="textPersonName" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <include
+        android:id="@+id/create_account_location"
+        layout="@layout/location_selection_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_account_name_layout" />
+
+    <include
+        android:id="@+id/birthdate_form"
+        layout="@layout/birthdate_selection_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/create_account_location"
+        app:layout_constraintTop_toBottomOf="@+id/create_account_location" />
+
+    <include
+        android:id="@+id/tag_selector"
+        layout="@layout/tag_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/birthdate_form"
+        app:layout_constraintStart_toStartOf="@+id/birthdate_form"
+        app:layout_constraintTop_toBottomOf="@+id/birthdate_form" />
+
+    <include
+        android:id="@+id/pet_manage"
+        layout="@layout/pet_manage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tag_selector" />
+
+    <Button
+        android:id="@+id/continue_button"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/cont"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pet_manage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

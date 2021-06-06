@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/register_form_button"
+        style="@style/Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/register"
+        app:layout_constraintEnd_toEndOf="@+id/login_form_email_layout"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/login_form_email_layout"
+        app:layout_constraintTop_toBottomOf="@+id/login_form_email_layout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_form_email_layout"
+        style="@style/TextForm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="@+id/login_form_part"
+        app:layout_constraintStart_toStartOf="@+id/login_form_part"
+        app:layout_constraintTop_toBottomOf="@+id/login_form_part">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/login_form_email"
+            style="@style/TextBase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/email"
+            android:inputType="textPersonName" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/logo_register"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="120dp"
+        android:contentDescription="@string/logoDesc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/logo" />
+
+    <include
+        android:id="@+id/login_form_part"
+        layout="@layout/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/logo_register"
+        app:layout_constraintStart_toStartOf="@+id/logo_register"
+        app:layout_constraintTop_toBottomOf="@+id/logo_register" />
+</androidx.constraintlayout.widget.ConstraintLayout>
