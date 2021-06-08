@@ -48,8 +48,16 @@ class UserViewModel : ViewModel() {
         userData.value?.profile?.location?.city = city
     }
 
-    fun setBirthDate(date: Number, month: String, year: Number) {
-        userData.value?.profile?.birthDate = BirthDate(date, month, year)
+    fun setBirthDate(date: Number) {
+        userData.value?.profile?.birthDate?.date = date
+    }
+
+    fun setBirthMonth(month: String) {
+        userData.value?.profile?.birthDate?.month = month
+    }
+
+    fun setBirthYear(year: Number) {
+        userData.value?.profile?.birthDate?.year = year
     }
 
 }

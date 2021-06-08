@@ -5,9 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.HorizontalScrollView
-import android.widget.LinearLayout
+import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
@@ -15,12 +13,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.meowsandbarks.R
+import mvvm.data.CountryMap
 import mvvm.viewmodel.UserViewModel
 
 class CreateAccountFragment : Fragment() {
 
     private val form: UserViewModel by activityViewModels()
     private lateinit var colors: List<Int?>
+    private val citiesByCountry = CountryMap.instance
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -35,6 +35,8 @@ class CreateAccountFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_create_account, container, false)
         setupAddPetButton(view)
+        setupLocationForm(view)
+        setupMonths(view)
         view.findViewById<Button>(R.id.add_tag_button).setOnClickListener {
             val v = AddTagBottomSheetFragment();
             v.show(requireActivity().supportFragmentManager, "add_tag")
@@ -43,16 +45,49 @@ class CreateAccountFragment : Fragment() {
         form.userData.observe(viewLifecycleOwner, Observer {
             setupTagList(it.profile.tags)
         })
-        
+
         return view
     }
 
+    private fun setupMonths(view: View) {
+        val selector = view.findViewById<AutoCompleteTextView>(R.id.month)
+        val adapter = ArrayAdapter.createFromResource(requireContext(), R.array.months, android.R.layout.simple_list_item_1)
+        selector.setAdapter(adapter)
+        selector.setOnItemClickListener { _, _, position, _ ->
+            form.setBirthMonth((adapter.getItem(position) ?: "").toString())
+        }
+    }
+
+    private fun setupLocationForm(view: View) {
+        val countrySelector = view.findViewById<AutoCompleteTextView>(R.id.country)
+        val citySelector = view.findViewById<AutoCompleteTextView>(R.id.city)
+        val cityAdapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, mutableListOf())
+        val countryAdapter =
+            ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, citiesByCountry.keys.toList())
+        countrySelector.setAdapter(countryAdapter)
+        citySelector.setAdapter(cityAdapter)
+
+        countrySelector.setOnItemClickListener { _, _, position, _ ->
+                form.setLocationCountry(countryAdapter.getItem(position) ?: "")
+            }
+
+        form.currentCountry.observe(viewLifecycleOwner, Observer {
+            citySelector.clearListSelection()
+            citySelector.text = null
+            form.setLocationCity("")
+            val cities = citiesByCountry.getOrElse(it) { listOf() }
+            cityAdapter.clear()
+            cityAdapter.addAll(cities)
+            citySelector.setOnItemClickListener { _, _, position, _ ->
+                form.setLocationCity(countryAdapter.getItem(position) ?: "")
+            }
+        })
+
+    }
+
     private fun setupTagList(tags: MutableList<String>) {
-        Log.i("test", "called")
         view?.let { view ->
             val list = view.findViewById<HorizontalScrollView>(R.id.list_view)[0] as LinearLayout
-            Log.i("test", "entered")
-            Log.i("test", tags.toString())
             list.removeAllViews()
             for (i in tags) {
                 val v = layoutInflater.inflate(R.layout.tag, null)
@@ -64,7 +99,6 @@ class CreateAccountFragment : Fragment() {
                 }
                 list.addView(v)
             }
-            Log.i("test", "all done")
         }
     }
 

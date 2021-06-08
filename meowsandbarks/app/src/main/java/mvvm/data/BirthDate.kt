@@ -1,7 +1,7 @@
 package mvvm.data
 
 data class BirthDate(
-        var date: Number,
-        val month: String,
-        val year: Number
+    var date: Number,
+    var month: String,
+    var year: Number
 )
