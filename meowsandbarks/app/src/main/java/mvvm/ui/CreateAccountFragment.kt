@@ -29,7 +29,6 @@ class CreateAccountFragment : Fragment() {
     ): View? {
         colors = listOf(
                 context?.let { ContextCompat.getColor(it, R.color.sea_green) },
-                context?.let { ContextCompat.getColor(it, R.color.light_blue) },
                 context?.let { ContextCompat.getColor(it, R.color.light_green) },
                 context?.let { ContextCompat.getColor(it, R.color.grass_green) })
 
@@ -59,28 +58,29 @@ class CreateAccountFragment : Fragment() {
     }
 
     private fun setupLocationForm(view: View) {
+
         val countrySelector = view.findViewById<AutoCompleteTextView>(R.id.country)
-        val citySelector = view.findViewById<AutoCompleteTextView>(R.id.city)
-        val cityAdapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, mutableListOf())
         val countryAdapter =
             ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, citiesByCountry.keys.toList())
         countrySelector.setAdapter(countryAdapter)
-        citySelector.setAdapter(cityAdapter)
+
+        val citySelector = view.findViewById<AutoCompleteTextView>(R.id.city)
 
         countrySelector.setOnItemClickListener { _, _, position, _ ->
-                form.setLocationCountry(countryAdapter.getItem(position) ?: "")
-            }
+            form.setLocationCountry(countryAdapter.getItem(position) ?: "")
+        }
+
+        citySelector.setOnItemClickListener { _, _, position, _ ->
+            form.setLocationCity(countryAdapter.getItem(position) ?: "")
+        }
 
         form.currentCountry.observe(viewLifecycleOwner, Observer {
             citySelector.clearListSelection()
             citySelector.text = null
             form.setLocationCity("")
             val cities = citiesByCountry.getOrElse(it) { listOf() }
-            cityAdapter.clear()
-            cityAdapter.addAll(cities)
-            citySelector.setOnItemClickListener { _, _, position, _ ->
-                form.setLocationCity(countryAdapter.getItem(position) ?: "")
-            }
+            val cityAdapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, cities)
+            citySelector.setAdapter(cityAdapter)
         })
 
     }

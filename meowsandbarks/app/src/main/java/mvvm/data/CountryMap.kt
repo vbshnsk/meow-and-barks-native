@@ -5,7 +5,7 @@ class CountryMap {
     companion object {
         val instance = mapOf(
                 Pair("Ukraine", listOf("Kyiv", "Slavutych")),
-                Pair("USA", listOf("New York", "Houston"))
+                Pair("USA", listOf("New York", "Houston", "Pavlohrad"))
         )
     }
 }
