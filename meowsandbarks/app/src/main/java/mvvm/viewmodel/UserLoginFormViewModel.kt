@@ -5,28 +5,34 @@ import androidx.lifecycle.*
 import mvvm.data.*
 import mvvm.network.Network
 import mvvm.validators.EmailValidator
-import mvvm.validators.PasswordValidator
 import mvvm.validators.UsernameValidator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
 import util.notifyObserver
-import java.util.*
 
-class UserViewModel : ViewModel() {
+class UserLoginFormViewModel : ViewModel() {
 
     var userData: MutableLiveData<UserLiveData> = MutableLiveData(UserLiveData())
     var currentCountry: MutableLiveData<String> = MutableLiveData()
     var token: MutableLiveData<String> = MutableLiveData()
+    var registerSuccess: MutableLiveData<Boolean> = MutableLiveData()
 
     fun addTag(tag: String) {
-        userData.value?.profile?.tags?.add(tag)
+        if (userData.value?.profile?.tags?.none { it === tag }!!) {
+            userData.value?.profile?.tags?.add(tag)
+            userData.notifyObserver()
+        }
+    }
+
+    fun removeTag(tag: String) {
+        userData.value?.profile?.tags =
+            userData.value?.profile?.tags?.filter { it !== tag }?.toMutableList()!!
         userData.notifyObserver()
     }
 
-    fun tryLogin(): String? {
-        Network.authService.signUp(
+    fun tryLogin() {
+        Network.authService.signIn(
             LoginRequest(userData.value!!.email!!, userData.value!!.password!!)
         ).enqueue(object : Callback<LoginResponse> {
             override fun onFailure(res: Call<LoginResponse>, t: Throwable) {
@@ -44,7 +50,6 @@ class UserViewModel : ViewModel() {
             }
 
         })
-        return null
     }
 
     fun setUsername(username: String): Boolean {
@@ -105,6 +110,56 @@ class UserViewModel : ViewModel() {
     fun isLoginDataFullyFilled(): Boolean {
         return !userData.value?.email.isNullOrEmpty() &&
                 !userData.value?.password.isNullOrEmpty()
+    }
+
+    fun addPet(pet: PetLiveData) {
+        userData.value?.profile?.pets?.add(pet)
+        userData.notifyObserver()
+    }
+
+    fun tryFinishProfile() {
+        for (pet in userData.value?.profile!!.pets) {
+            Network.petsService.addPet(token.value!!, pet.name!!, pet.age!!, pet.type!!)
+                .enqueue(object : Callback<Unit> {
+                    override fun onFailure(call: Call<Unit>, t: Throwable) {
+                    }
+
+                    override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                        if (pet.image != null) {
+                            tryUploadPetImage(pet)
+                        }
+                    }
+
+                })
+        }
+    }
+
+    private fun tryUploadPetImage(pet: PetLiveData) {
+
+    }
+
+    fun tryRegister() {
+        Network.authService.signUp(RegisterRequest(
+            userData.value?.email!!,
+            userData.value?.password!!,
+            userData.value?.username!!
+        )).enqueue(object : Callback<Unit> {
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+
+            }
+
+            override fun onResponse(
+                call: Call<Unit>,
+                response: Response<Unit>
+            ) {
+                if (response.isSuccessful) {
+                    if (response.code() == 201) {
+                        registerSuccess.value = true
+                    }
+                }
+            }
+
+        })
     }
 
 }

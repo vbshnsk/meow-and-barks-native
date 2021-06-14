@@ -8,14 +8,15 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.meowsandbarks.R
-import mvvm.viewmodel.UserViewModel
+import mvvm.viewmodel.UserLoginFormViewModel
 import util.setupValueSetterInForm
 
 class RegisterFragment : Fragment() {
 
-    private val form: UserViewModel by activityViewModels()
+    private val form: UserLoginFormViewModel by activityViewModels()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -23,9 +24,15 @@ class RegisterFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_register, container, false)
+
+        form.registerSuccess.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                findNavController().navigate(R.id.action_registerFragment_to_createAccountFragment)
+            }
+        })
         view.findViewById<Button>(R.id.register_form_button).setOnClickListener {
             if (form.isUserDataFullyFilled()) {
-                findNavController().navigate(R.id.action_registerFragment_to_createAccountFragment)
+                form.tryRegister()
             }
         }
 

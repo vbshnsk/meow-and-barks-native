@@ -1,6 +1,7 @@
 package mvvm.ui
 
-import android.content.Intent
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,13 +14,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.meowsandbarks.R
-import mvvm.viewmodel.UserViewModel
-import retrofit2.Retrofit
+import com.google.android.gms.common.util.SharedPreferencesUtils
+import mvvm.viewmodel.UserLoginFormViewModel
 import util.setupValueSetterInForm
 
 class SignInFragment : Fragment() {
 
-    private val form: UserViewModel by activityViewModels()
+    private val form: UserLoginFormViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,12 +38,16 @@ class SignInFragment : Fragment() {
         }
 
         form.token.observe(viewLifecycleOwner, Observer {
-            Log.i("test", "set to null")
-
             if (it.isNullOrEmpty()) {
                 showErrorMessage()
             }
             else {
+                val prefs = requireActivity()
+                    .getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE)
+                with(prefs.edit()) {
+                    putString("token", it)
+                    apply()
+                }
                 findNavController().navigate(R.id.action_signInFragment_to_mainActivity)
             }
         })

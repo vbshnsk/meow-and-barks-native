@@ -11,5 +11,6 @@ class Network {
             .build()
 
         val authService: AuthService = petsApi.create(AuthService::class.java)
+        val petsService: PetsService = petsApi.create(PetsService::class.java)
     }
 }

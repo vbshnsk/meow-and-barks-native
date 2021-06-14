@@ -9,11 +9,11 @@ import androidx.fragment.app.activityViewModels
 import com.example.meowsandbarks.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
-import mvvm.viewmodel.UserViewModel
+import mvvm.viewmodel.UserLoginFormViewModel
 
 class AddTagBottomSheetFragment : BottomSheetDialogFragment() {
 
-    private val form: UserViewModel by activityViewModels()
+    private val form: UserLoginFormViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.add_tag_dialog, container, false)

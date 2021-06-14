@@ -1,7 +1,6 @@
 package mvvm.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +13,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.meowsandbarks.R
 import mvvm.data.CountryMap
-import mvvm.viewmodel.UserViewModel
+import mvvm.data.PetLiveData
+import mvvm.viewmodel.UserLoginFormViewModel
 
 class CreateAccountFragment : Fragment() {
 
-    private val form: UserViewModel by activityViewModels()
+    private val form: UserLoginFormViewModel by activityViewModels()
     private lateinit var colors: List<Int?>
     private val citiesByCountry = CountryMap.instance
 
@@ -33,17 +33,22 @@ class CreateAccountFragment : Fragment() {
                 context?.let { ContextCompat.getColor(it, R.color.grass_green) })
 
         val view = inflater.inflate(R.layout.fragment_create_account, container, false)
-        setupAddPetButton(view)
+        setupAddPetButton(view, mutableListOf())
         setupLocationForm(view)
         setupMonths(view)
         view.findViewById<Button>(R.id.add_tag_button).setOnClickListener {
-            val v = AddTagBottomSheetFragment();
+            val v = AddTagBottomSheetFragment()
             v.show(requireActivity().supportFragmentManager, "add_tag")
+        }
+
+        view.findViewById<Button>(R.id.continue_button).setOnClickListener {
         }
 
         form.userData.observe(viewLifecycleOwner, Observer {
             setupTagList(it.profile.tags)
+            setupAddPetButton(view, it.profile.pets)
         })
+
 
         return view
     }
@@ -92,6 +97,10 @@ class CreateAccountFragment : Fragment() {
             for (i in tags) {
                 val v = layoutInflater.inflate(R.layout.tag, null)
                 val tag = v.findViewById<Button>(R.id.tag_button)
+                tag.setOnLongClickListener {
+                    form.removeTag(i)
+                    true
+                }
                 tag.text = i
                 val col = colors.random()
                 col?.let {
@@ -102,13 +111,21 @@ class CreateAccountFragment : Fragment() {
         }
     }
 
-    private fun setupAddPetButton(view: View) {
+    private fun setupAddPetButton(view: View, pets: MutableList<PetLiveData>) {
         val photoList = view.findViewById<View>(R.id.pet_manage)
                 .findViewById<HorizontalScrollView>(R.id.list_view)[0] as LinearLayout
+        photoList.removeAllViews()
         val v = layoutInflater.inflate(R.layout.empty_image_add, null)
 
+        for (pet in pets) {
+            val image = layoutInflater.inflate(R.layout.image_base, null)
+            image.findViewById<ImageView>(R.id.image)
+                .setImageBitmap(pet.image)
+            photoList.addView(image)
+        }
+
         val petView = AddPetBottomSheetFragment()
-        (v.findViewById<CardView>(R.id.bg_card)).setOnClickListener {
+        (v.findViewById<CardView>(R.id.add_card_button)).setOnClickListener {
             petView.show(requireActivity().supportFragmentManager, "add_pet")
         }
         photoList.addView(v)

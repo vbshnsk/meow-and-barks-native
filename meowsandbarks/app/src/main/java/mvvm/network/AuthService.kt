@@ -1,14 +1,19 @@
 package mvvm.network
 
-import mvvm.data.LoginRequest
-import mvvm.data.LoginResponse
+import mvvm.data.*
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface AuthService {
 
     @POST("/pets-auth/users/sign-in")
-    fun signUp(@Body userRequest: LoginRequest): Call<LoginResponse>
+    fun signIn(@Body userRequest: LoginRequest): Call<LoginResponse>
+
+    @POST("/pets-auth/users/sign-up")
+    fun signUp(@Body userRequest: RegisterRequest): Call<Unit>
+
+    @GET("/pets-auth/users/profile")
+    fun getUser(
+        @Header("Authorization") token: String): Call<ProfileResponse>
 
 }
